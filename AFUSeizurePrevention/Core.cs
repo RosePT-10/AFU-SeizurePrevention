@@ -4,6 +4,7 @@ using HarmonyLib;
 using UnityEngine;
 using Il2CppView_Equipment;
 using Il2CppTMPro;
+using Il2CppView_Main;
 
 [assembly: MelonInfo(typeof(AFUSeizurePrevention.Core), "AFUSeizurePrevention", "1.0.0", "taldo", null)]
 [assembly: MelonGame("Videocult", "Airframe")]
@@ -23,19 +24,33 @@ namespace AFUSeizurePrevention
             }
             
         }
-        public override void OnInitializeMelon()
+
+        [HarmonyPatch(typeof(RiotStick_View), "Draw", new Type[] {typeof(float)})]
+        public class RiotStickFix
         {
-            LoggerInstance.Msg("Initialized.");
+            public static void Postfix(RiotStick_View __instance)
+            {
+                //Melon<Core>.Logger.Msg("detected");
+                __instance.myLight.range = 0;
+            }
+            
         }
 
-        public override void OnUpdate()
+        [HarmonyPatch(typeof(Flashbang_View), "Draw", new Type[] {typeof(float)})]
+        public class FlashbangFix
         {
-            base.OnUpdate();
+            public static void Postfix(Flashbang_View __instance)
+            {
+                //Melon<Core>.Logger.Msg("detected");
+                //__instance.myLight.range = 0; 
+                __instance.Retire();
+            }
+            
+        }
 
-            //Type my_light_override = typeof(EMPgrenade_View);
-            //FieldInfo myLight_field = my_light_override.GetField("myLight");
-            //LoggerInstance.Msg(myLight_field.GetValue(new EMPgrenade_View()));
-
+        public override void OnInitializeMelon()
+        {
+            LoggerInstance.Msg("Initialized. Bye bye flashbangs!");
         }
     }
 }
