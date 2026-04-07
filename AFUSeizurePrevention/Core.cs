@@ -13,14 +13,22 @@ namespace AFUSeizurePrevention
 {
     public class Core : MelonMod
     {
-        
+        private MelonPreferences_Category SeizPrevCat;
+        private MelonPreferences_Entry<bool> IsEMP;
+        private MelonPreferences_Entry<bool> IsRiotStick;
+        private MelonPreferences_Entry<bool> IsFlashbang;
+
+
         [HarmonyPatch(typeof(EMPgrenade_View), "Draw", new Type[] {typeof(float)})]
         public class EMPFix
         {
             public static void Postfix(EMPgrenade_View __instance)
             {
                 //Melon<Core>.Logger.Msg("detected");
-                __instance.myLight.range = 0;
+                if (Melon<Core>.Instance.IsEMP.Value == true)
+                {
+                    __instance.myLight.range = 0;
+                }
             }
             
         }
@@ -31,7 +39,10 @@ namespace AFUSeizurePrevention
             public static void Postfix(RiotStick_View __instance)
             {
                 //Melon<Core>.Logger.Msg("detected");
-                __instance.myLight.range = 0;
+                if (Melon<Core>.Instance.IsRiotStick.Value == true)
+                {
+                    __instance.myLight.range = 0;
+                }
             }
             
         }
@@ -43,13 +54,21 @@ namespace AFUSeizurePrevention
             {
                 //Melon<Core>.Logger.Msg("detected");
                 //__instance.myLight.range = 0; 
-                __instance.Retire();
+                if (Melon<Core>.Instance.IsFlashbang.Value == true)
+                {
+                    __instance.Retire();
+                }
+                
             }
             
         }
 
         public override void OnInitializeMelon()
         {
+            SeizPrevCat = MelonPreferences.CreateCategory("AFUSeizurePrevention");
+            IsEMP = SeizPrevCat.CreateEntry<bool>("EMPFlashDisabled", true);
+            IsRiotStick = SeizPrevCat.CreateEntry<bool>("RiotStickFlashDisabled", true);
+            IsFlashbang = SeizPrevCat.CreateEntry<bool>("FlashbangsRemoved", true);
             LoggerInstance.Msg("Initialized. Bye bye flashbangs!");
         }
     }
