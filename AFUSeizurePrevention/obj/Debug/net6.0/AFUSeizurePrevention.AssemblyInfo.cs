@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AFUSeizurePrevention")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1f3b5e2f9862298d019e86636cbf5833bde415d1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+174bcb4fdb525cd5e37df7fb68a2bf08f0f98800")]
 [assembly: System.Reflection.AssemblyProductAttribute("AFUSeizurePrevention")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AFUSeizurePrevention")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
