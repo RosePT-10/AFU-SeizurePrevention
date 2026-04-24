@@ -9,7 +9,7 @@ using Il2CppQuantum_Game;
 using Il2CppPhoton.Deterministic;
 using UnityEngine.EventSystems;
 using Il2Cpp;
-using Il2CppUI_LEGACY_PlayerHUD;
+using Il2CppView_ImageEffects;
 
 [assembly: MelonInfo(typeof(AFUSeizurePrevention.Core), "AFUSeizurePrevention", "1.0.0", "taldo", null)]
 [assembly: MelonGame("Videocult", "Airframe")]
@@ -143,7 +143,7 @@ namespace AFUSeizurePrevention
                 {
                     CoverScreen.freeColor = new Color(0.0f, 0.0f, 0.0f, Mathf.Min(1.0f, ((float)Darkness) / (LinearFade ? FADE_TIME : 450.0f)));
 
-                    CoverScreen.Resized();
+                    CoverScreen.WasResized();
                     CoverScreen.gameObject.SetActive(false);
                     CoverScreen.gameObject.SetActive(true);
                 }
