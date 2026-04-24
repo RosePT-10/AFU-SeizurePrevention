@@ -9,6 +9,7 @@ using Il2CppQuantum_Game;
 using Il2CppPhoton.Deterministic;
 using UnityEngine.EventSystems;
 using Il2Cpp;
+using Il2CppUI_LEGACY_PlayerHUD;
 
 [assembly: MelonInfo(typeof(AFUSeizurePrevention.Core), "AFUSeizurePrevention", "1.0.0", "taldo", null)]
 [assembly: MelonGame("Videocult", "Airframe")]
@@ -21,6 +22,7 @@ namespace AFUSeizurePrevention
         private MelonPreferences_Entry<bool> IsEMP;
         private MelonPreferences_Entry<bool> IsRiotStick;
         private MelonPreferences_Entry<bool> IsFlashbang;
+        private MelonPreferences_Entry<bool> IsScreenEffect;
 
 
         [HarmonyPatch(typeof(EMPgrenade_View), "Draw", [typeof(float)])]
@@ -196,7 +198,17 @@ namespace AFUSeizurePrevention
                 return false;
             } 
         }
-
+        
+        [HarmonyPatch(typeof(DamageImageEffects), "UpdateTick")]
+        private class HealthPulseRemoval
+        {
+            public static void Postfix(DamageImageEffects __instance)
+            {
+                if (!Melon<Core>.Instance.IsScreenEffect.Value) return;
+                __instance.ResetAllEffects();
+            } 
+        }
+        
         [HarmonyPatch(typeof(SessionRunner), "Shutdown")]
         private class Shutdown1
         {
@@ -214,6 +226,8 @@ namespace AFUSeizurePrevention
             IsEMP = SeizPrevCat.CreateEntry<bool>("EMPFlashDisabled", true);
             IsRiotStick = SeizPrevCat.CreateEntry<bool>("RiotStickFlashDisabled", true);
             IsFlashbang = SeizPrevCat.CreateEntry<bool>("FlashbangsRemoved", true);
+            IsScreenEffect = SeizPrevCat.CreateEntry<bool>("RemoveScreenEffects", true);
+
             LoggerInstance.Msg("Initialized. Bye bye flashbangs!");
         }
     }
