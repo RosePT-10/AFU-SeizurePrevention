@@ -51,6 +51,18 @@ namespace AFUSeizurePrevention
             }
         }
         
+        [HarmonyPatch(typeof(Flashbang_View), "Draw", [typeof(float)])]
+        public class FlashbangLightFix
+        {
+            public static void Postfix(Flashbang_View __instance)
+            {
+                //Melon<Core>.Logger.Msg("detected");
+                if (Melon<Core>.Instance.IsFlashbang.Value == true)
+                {
+                    __instance.myLight.range = 0;
+                }
+            }
+        }
 
         internal static Camera_View Camera;
         internal static ASCIILabel CoverScreen = null;
